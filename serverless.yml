@@ -1,0 +1,40 @@
+service: serverless-example
+
+plugins:
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  environment:
+    DYNAMODB_TABLE_NAME: ''
+    FIREBASE_PROJECT_ID: ''
+    FIREBASE_CLIENT_EMAIL: ''
+    FIREBASE_PRIVATE_KEY: ''
+
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - 'dynamodb:Query'
+            - 'dynamodb:Scan'
+            - 'dynamodb:GetItem'
+            - 'dynamodb:PutItem'
+            - 'dynamodb:UpdateItem'
+            - 'dynamodb:DeleteItem'
+            - 'dynamodb:BatchWriteItem'
+            - 'dynamodb:BatchGetItem'
+            - 'dynamodb:DescribeTable'
+          Resource: 'arn:aws:dynamodb:us-east-1:404531631129:table/noti-serverless-user'
+
+functions:
+  main:
+    handler: dist/main.handler
+    events:
+      - http:
+          method: ANY
+          path: /
+      - http:
+          method: ANY
+          path: '{proxy+}'
