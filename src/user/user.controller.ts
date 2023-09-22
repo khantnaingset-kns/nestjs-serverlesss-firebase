@@ -12,7 +12,7 @@ export class UserController {
     await UserModel.create({ id: uuidv4(), fcmRegisterToken: [data.token] });
   }
 
-  @Get(':id')
+  @Get('push-noti/:id')
   async sendMessageToUser(@Param('id') id: string) {
     const user = await UserModel.get(id);
     await this._firebaseService.sendMessage(user.fcmRegisterToken);
